@@ -1,0 +1,45 @@
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: echo-service
+#   namespace: tenant-sta-bjacobs1-test
+#   labels:
+#     app: echo-server
+#     method: test-brandon
+#   # annotations:
+#   #   kubernetes.io/ingress.class: traefik-internal-tenant-ex
+# spec:
+#   ingressClassName: traefik-internal-tenant-ex
+#   rules:
+#     - host: "test.tenant-sta-bjacobs1-test.ord1.ingress.coreweave.cloud"
+#       http:
+#         paths:
+#           - path: /api/?(.*)
+#             backend:
+#               serviceName: echo-service
+#               servicePort: 80
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: traefik-internal-tenant-las
+    ingress.kubernetes.io/force-ssl-redirect: "false"
+    ingress.kubernetes.io/ssl-redirect: "false"
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-test
+  name: {{ .Release.Name }}-test
+spec:
+  #ingressClassName: traefik-internal-tenant-ex
+  rules:
+  - host: brandon-test.com
+    http:
+      paths:
+      - backend:
+          serviceName: echo-service
+          servicePort: 80
+        path: /
+        pathType: ImplementationSpecific
+             
